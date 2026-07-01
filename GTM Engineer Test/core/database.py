@@ -2,18 +2,17 @@ import os
 import psycopg
 from dotenv import load_dotenv
 
+# Load the local .env file
 load_dotenv()
 
-# FALLBACK GUARD: If os.getenv fails to find the key or evaluates to None, fall back to the string literal.
-raw_url = os.getenv("DATABASE_URL")
-if not raw_url:
-    DB_URL = "postgresql://neondb_owner:npg_DJUayd9lxkC2@ep-delicate-sound-aog52z2w-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-else:
-    DB_URL = raw_url
-
 def get_db_connection():
-    """Reusable connection factory for the entire app."""
-    return psycopg.connect(DB_URL, autocommit=True)
+    """Reusable connection factory for the entire app using DATABASE_URL."""
+    database_url = os.getenv("DATABASE_URL")
+
+    if not database_url:
+        raise ValueError("❌ CRITICAL: DATABASE_URL environment variable is missing!")
+
+    return psycopg.connect(database_url, autocommit=True)
 
 def init_database():
     """Resets and prepares the database structure with optimized indexing."""
@@ -56,7 +55,7 @@ def init_database():
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(schema_sql)
-            print("Core tables successfully deployed with indexes.")
+    print("Core tables successfully deployed with indexes.")
 
 if __name__ == "__main__":
     init_database()
