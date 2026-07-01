@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# =====================================================================
+# Custom Project Additions (Fixes for Mac & PyCharm)
+# =====================================================================
+.DS_Store
+.idea/
