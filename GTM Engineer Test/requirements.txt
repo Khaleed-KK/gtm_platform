@@ -1,0 +1,6 @@
+google-api-python-client
+google-genai
+psycopg[binary]
+streamlit
+pandas
+python-dotenv
